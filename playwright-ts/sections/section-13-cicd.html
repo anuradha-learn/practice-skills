@@ -1,0 +1,553 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 13: CI/CD with GitHub Actions — Quiz</title>
+<meta property="og:title" content="CI/CD with GitHub Actions — Section Quiz">
+<meta property="og:description" content="8 questions on GitHub Secrets, workflow files, debugging CI failures, traces, Allure, and workflow dispatch, from Anuradha Agarwal's Playwright + TypeScript automation course.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://www.anuradhaagarwal.com/quiz-share-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CI/CD with GitHub Actions — Section Quiz">
+<meta name="twitter:description" content="8 questions on GitHub Secrets, workflow files, debugging CI failures, traces, Allure, and workflow dispatch.">
+<meta name="twitter:image" content="https://www.anuradhaagarwal.com/quiz-share-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F7F8FA;
+    --panel: #FFFFFF;
+    --panel-2: #F7F8FA;
+    --border: #E2E6ED;
+    --text: #17203A;
+    --text-dim: #5B6478;
+    --text-faint: #8B93A7;
+    --orange: #E8792A;
+    --orange-text: #C85F14;
+    --orange-tint: #FDF1E7;
+    --green: #1C9A5A;
+    --green-dim: #E9F9F0;
+    --red: #D6493F;
+    --red-dim: #FBEAE8;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 24px;
+    line-height:1.5;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+
+  .window{
+    width:100%;
+    max-width:640px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow: 0 8px 30px rgba(23,32,58,0.08);
+  }
+
+  .titlebar{
+    background:var(--panel-2);
+    border-bottom:1px solid var(--border);
+    padding:12px 16px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .dot{width:11px; height:11px; border-radius:50%;}
+  .dot.r{background:#F0625A;}
+  .dot.a{background:#F5B942;}
+  .dot.g{background:#4ADE80;}
+  .filename{
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--text-dim);
+    margin-left:8px;
+  }
+  .filename b{color:var(--text); font-weight:500;}
+  .backlink{margin-left:auto; font-family:var(--mono); font-size:11.5px; color:var(--text-faint); text-decoration:none;}
+
+  .progressbar{
+    height:3px;
+    background:var(--border);
+    position:relative;
+    overflow:hidden;
+  }
+  .progressbar-fill{
+    height:100%;
+    background:var(--orange);
+    width:0%;
+    transition:width 0.4s ease;
+  }
+
+  .content{
+    padding:32px 28px 28px 28px;
+  }
+
+  /* ---- Intro screen ---- */
+  .intro .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:0.06em;
+    color:var(--orange-text);
+    text-transform:uppercase;
+    margin-bottom:14px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .eyebrow::before{content:"▶"; font-size:10px;}
+  .intro h1{
+    font-size:25px;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    margin-bottom:12px;
+    color:var(--text);
+  }
+  .intro p{
+    color:var(--text-dim);
+    font-size:15px;
+    margin-bottom:24px;
+    max-width:46ch;
+  }
+  .meta-row{
+    display:flex;
+    gap:20px;
+    margin-bottom:28px;
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--text-faint);
+  }
+  .meta-row span b{color:var(--text-dim); font-weight:500;}
+
+  .btn{
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:14.5px;
+    border:none;
+    border-radius:7px;
+    padding:13px 22px;
+    cursor:pointer;
+    transition:transform 0.15s ease, background 0.15s ease;
+  }
+  .btn:focus-visible{outline:2px solid var(--orange); outline-offset:2px;}
+  .btn-primary{
+    background:var(--orange);
+    color:#fff;
+  }
+  .btn-primary:hover{transform:translateY(-1px); background:#D66A1E;}
+  .btn-ghost{
+    background:#fff;
+    color:var(--text);
+    border:1px solid var(--border);
+  }
+  .btn-ghost:hover{transform:translateY(-1px); background:var(--panel-2);}
+
+  /* ---- Question screen ---- */
+  .qmeta{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--text-faint);
+    margin-bottom:18px;
+  }
+  .qmeta .tag{
+    color:var(--orange-text);
+    background:var(--orange-tint);
+    padding:3px 9px;
+    border-radius:5px;
+    font-size:11px;
+  }
+  .question-text{
+    font-size:18px;
+    font-weight:600;
+    line-height:1.4;
+    margin-bottom:22px;
+    color:var(--text);
+  }
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:22px;
+  }
+  .option{
+    text-align:left;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px 16px;
+    color:var(--text);
+    font-family:var(--sans);
+    font-size:14.5px;
+    cursor:pointer;
+    transition:border-color 0.15s ease, background 0.15s ease;
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+  }
+  .option:hover:not(:disabled){border-color:var(--text-faint);}
+  .option:focus-visible{outline:2px solid var(--orange); outline-offset:2px;}
+  .option-letter{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--text-faint);
+    background:var(--panel-2);
+    border:1px solid var(--border);
+    border-radius:4px;
+    width:22px; height:22px;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+    margin-top:1px;
+  }
+  .option.correct{border-color:var(--green); background:var(--green-dim);}
+  .option.correct .option-letter{background:var(--green); color:#fff; border-color:var(--green);}
+  .option.incorrect{border-color:var(--red); background:var(--red-dim);}
+  .option.incorrect .option-letter{background:var(--red); color:#fff; border-color:var(--red);}
+  .option:disabled{cursor:default;}
+  .option:disabled:not(.correct):not(.incorrect){opacity:0.5;}
+
+  .explain{
+    display:none;
+    font-size:13.5px;
+    color:var(--text-dim);
+    background:var(--panel-2);
+    border-left:3px solid var(--green);
+    border-radius:0 6px 6px 0;
+    padding:12px 14px;
+    margin-bottom:22px;
+    line-height:1.55;
+  }
+  .explain.show{display:block;}
+  .explain b{color:var(--text);}
+
+  .nav-row{display:flex; justify-content:flex-end;}
+
+  /* ---- Result screen ---- */
+  .result .eyebrow{
+    font-family:var(--mono); font-size:12px; letter-spacing:0.06em;
+    text-transform:uppercase; margin-bottom:10px; color:var(--text-faint);
+  }
+  .score-line{
+    display:flex; align-items:baseline; gap:10px; margin-bottom:6px;
+  }
+  .score-big{font-family:var(--mono); font-size:44px; font-weight:700; color:var(--text);}
+  .score-of{font-family:var(--mono); font-size:16px; color:var(--text-faint);}
+  .tier-title{font-size:21px; font-weight:700; margin-bottom:10px; color:var(--text);}
+  .tier-desc{color:var(--text-dim); font-size:14.5px; margin-bottom:24px; max-width:48ch;}
+
+  .report-table{
+    border:1px solid var(--border);
+    border-radius:8px;
+    overflow:hidden;
+    margin-bottom:26px;
+  }
+  .report-row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:10px 14px;
+    font-family:var(--mono); font-size:12.5px;
+    border-bottom:1px solid var(--border);
+  }
+  .report-row:last-child{border-bottom:none;}
+  .report-row .label{color:var(--text-dim);}
+  .pass{color:var(--green);}
+  .fail{color:var(--red);}
+
+  .cta-row{display:flex; gap:10px; flex-wrap:wrap;}
+  .btn-primary.cta{padding:14px 24px;}
+
+  .screen{display:none;}
+  .screen.active{display:block;}
+
+  @media (max-width:480px){
+    .content{padding:24px 18px 20px 18px;}
+    .intro h1{font-size:21px;}
+    .score-big{font-size:36px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="window">
+  <div class="titlebar">
+    <div class="dot r"></div><div class="dot a"></div><div class="dot g"></div>
+    <span class="filename">section-13<b>.spec.ts</b></span>
+    <a href="../hub.html" class="backlink">← back to track</a>
+  </div>
+  <div class="progressbar"><div class="progressbar-fill" id="progressFill"></div></div>
+
+  <div class="content">
+
+    <!-- INTRO -->
+    <div class="screen active" id="screen-intro">
+      <div class="intro">
+        <div class="eyebrow">section 13 · CI/CD</div>
+        <h1>CI/CD with GitHub Actions</h1>
+        <p>8 questions on why CI matters, GitHub Secrets, workflow files, debugging CI-only failures, storing traces and Allure reports in CI, and running tagged tests on demand.</p>
+        <div class="meta-row">
+          <span><b>8</b> questions</span>
+          <span><b>~2.5</b> min</span>
+          <span><b>0</b> fluff</span>
+        </div>
+        <button class="btn btn-primary" onclick="startQuiz()">Run test suite →</button>
+      </div>
+    </div>
+
+    <!-- QUESTION -->
+    <div class="screen" id="screen-question">
+      <div class="qmeta">
+        <span id="qCounter">test 1 / 8</span>
+        <span class="tag" id="qTag">why CI</span>
+      </div>
+      <div class="question-text" id="qText"></div>
+      <div class="options" id="qOptions"></div>
+      <div class="explain" id="qExplain"></div>
+      <div class="nav-row">
+        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next test →</button>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div class="screen" id="screen-result">
+      <div class="result">
+        <div class="eyebrow" id="rSuite">test suite complete</div>
+        <div class="score-line">
+          <span class="score-big" id="rScore">0</span>
+          <span class="score-of">/ 8 passed</span>
+        </div>
+        <div class="tier-title" id="rTier"></div>
+        <div class="tier-desc" id="rDesc"></div>
+        <div class="report-table" id="rTable"></div>
+        <div class="cta-row">
+          <a class="btn btn-primary cta" id="rCta" href="#" target="_blank" rel="noopener">See the full course →</a>
+          <button class="btn btn-ghost" onclick="restartQuiz()">Run again</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const COURSE_URL = "https://www.udemy.com/course/playwright-automation-basics-to-advance-typescript/?referralCode=EB1B083AE4ED6DB00852";
+
+const QUESTIONS = [
+  {
+    tag: "why CI",
+    text: "What's the core problem CI/CD solves that 'it works on my machine' doesn't address?",
+    options: [
+      "CI makes tests write themselves",
+      "CI validates code changes consistently for the whole team, on a clean environment, not just on one person's local setup",
+      "CI is only useful for very large teams",
+      "CI replaces the need for local testing entirely"
+    ],
+    correct: 1,
+    explain: "A test passing on your laptop only proves it works in your exact setup. CI proves it works in a clean, consistent environment — the only proof that actually matters for a team."
+  },
+  {
+    tag: "GitHub Secrets",
+    text: "Why use GitHub Secrets for credentials instead of hardcoding them in the workflow file?",
+    options: [
+      "Secrets make the pipeline run faster",
+      "Hardcoded credentials in a repo are a serious security risk — Secrets keep sensitive values encrypted and out of visible code",
+      "GitHub Secrets are required to run any workflow",
+      "Credentials can only be used locally, never in CI"
+    ],
+    correct: 1,
+    explain: "A hardcoded password sitting in a commit history is a real, common security incident waiting to happen — Secrets exist specifically to keep that kind of value out of the code itself."
+  },
+  {
+    tag: "workflow file",
+    text: "What does a GitHub Actions workflow file actually define?",
+    options: [
+      "Only the test code itself",
+      "The steps, triggers, and environment for how and when your tests run automatically",
+      "It's optional and has no functional effect",
+      "It only controls the report format"
+    ],
+    correct: 1,
+    explain: "The workflow file is the actual automation — what triggers a run, what steps happen, in what order, on what environment. Without it, nothing runs automatically at all."
+  },
+  {
+    tag: "debugging CI failures",
+    text: "Why might a test pass locally but fail in CI, related to workers configuration?",
+    options: [
+      "CI never runs the same tests as local",
+      "Differences in available resources or parallel worker count between local and CI environments can expose timing issues that don't show up locally",
+      "Workers configuration only affects report formatting",
+      "CI failures are always unrelated to configuration"
+    ],
+    correct: 1,
+    explain: "CI runners often have different resource constraints than your laptop — a timing issue that's invisible locally can surface the moment workers behave differently under CI's constraints."
+  },
+  {
+    tag: "traces in CI",
+    text: "Why store trace files as artifacts from a CI run, not just rely on the pass/fail result?",
+    options: [
+      "Traces are required for CI to function",
+      "Without a downloadable trace, a CI failure gives you far less to debug than a local failure would — artifacts close that gap",
+      "CI automatically fixes any failure it finds",
+      "Traces are only useful for API tests"
+    ],
+    correct: 1,
+    explain: "You can't attach a debugger to a CI runner the way you would locally. A saved trace artifact is what lets you actually investigate a CI-only failure after the fact."
+  },
+  {
+    tag: "Allure in CI",
+    text: "What's the benefit of generating an Allure report specifically inside the CI pipeline?",
+    options: [
+      "It has no benefit over local reports",
+      "It creates a consistent, shareable report from every CI run, so anyone on the team can review results without running tests themselves",
+      "Allure cannot run inside CI environments",
+      "Allure reports replace the need for CI entirely"
+    ],
+    correct: 1,
+    explain: "A local report only exists on your machine. A CI-generated report is accessible to the whole team — anyone can review what happened without needing to re-run anything themselves."
+  },
+  {
+    tag: "workflow dispatch",
+    text: "Why use workflow dispatch to run only tagged tests, like @smoke, in CI instead of the full suite every time?",
+    options: [
+      "Tagged tests are required by GitHub Actions",
+      "It gives control over running a fast subset on demand, instead of always waiting for the entire suite",
+      "Tags have no effect inside a CI environment",
+      "Workflow dispatch only works with untagged tests"
+    ],
+    correct: 1,
+    explain: "This connects directly back to the tagging strategy from Phase 2's kickoff — that strategy pays off concretely here, letting you trigger exactly the right subset on demand."
+  },
+  {
+    tag: "environment flexibility",
+    text: "Why build environment flexibility, like choosing staging vs. prod, into a CI workflow?",
+    options: [
+      "CI only ever runs against one fixed environment forever",
+      "The same pipeline can then validate different environments on demand, without maintaining separate workflow files for each",
+      "Environment flexibility is only relevant for local runs",
+      "It removes the need for GitHub Secrets"
+    ],
+    correct: 1,
+    explain: "One flexible pipeline that can target different environments is far easier to maintain than duplicating near-identical workflow files for every environment you need to test."
+  }
+];
+
+let current = 0;
+let score = 0;
+let answers = [];
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function startQuiz(){
+  current = 0; score = 0; answers = [];
+  showScreen('screen-question');
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q = QUESTIONS[current];
+  document.getElementById('qCounter').textContent = `test ${current + 1} / ${QUESTIONS.length}`;
+  document.getElementById('qTag').textContent = q.tag;
+  document.getElementById('qText').textContent = q.text;
+  document.getElementById('progressFill').style.width = `${(current / QUESTIONS.length) * 100}%`;
+
+  const optsEl = document.getElementById('qOptions');
+  optsEl.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span>${opt}</span>`;
+    btn.onclick = () => selectAnswer(i);
+    optsEl.appendChild(btn);
+  });
+
+  document.getElementById('qExplain').classList.remove('show');
+  document.getElementById('nextBtn').disabled = true;
+  document.getElementById('nextBtn').textContent = current === QUESTIONS.length - 1 ? 'See results →' : 'Next test →';
+}
+
+function selectAnswer(i){
+  const q = QUESTIONS[current];
+  const opts = document.querySelectorAll('#qOptions .option');
+  opts.forEach((o, idx) => {
+    o.disabled = true;
+    if (idx === q.correct) o.classList.add('correct');
+    else if (idx === i) o.classList.add('incorrect');
+  });
+  const correct = (i === q.correct);
+  if (correct) score++;
+  answers.push({ tag: q.tag, correct });
+
+  const ex = document.getElementById('qExplain');
+  ex.innerHTML = `<b>${correct ? 'Correct.' : 'Not quite.'}</b> ${q.explain}`;
+  ex.classList.add('show');
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function nextQuestion(){
+  current++;
+  if (current >= QUESTIONS.length){
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResults(){
+  document.getElementById('progressFill').style.width = '100%';
+  showScreen('screen-result');
+  document.getElementById('rScore').textContent = score;
+
+  let tier, desc;
+  if (score >= 7){
+    tier = "CI-Ready";
+    desc = "You understand not just how to set up a pipeline, but how to actually debug it when something only breaks there — which is the skill that matters most in practice.";
+  } else if (score >= 5){
+    tier = "Good Grounding";
+    desc = "Solid overall. The workers-configuration and traces-in-CI questions are worth another look — that's usually where 'works locally, fails in CI' confusion comes from.";
+  } else {
+    tier = "Worth a Focused Revisit";
+    desc = "This section connects a lot of earlier ideas — tagging, traces, reporting — into a real pipeline. Worth rewatching the debugging and workflow-dispatch lectures before moving on.";
+  }
+  document.getElementById('rTier').textContent = tier;
+  document.getElementById('rDesc').textContent = desc;
+
+  const table = document.getElementById('rTable');
+  table.innerHTML = '';
+  answers.forEach(a => {
+    const row = document.createElement('div');
+    row.className = 'report-row';
+    row.innerHTML = `<span class="label">${a.tag}</span><span class="${a.correct ? 'pass' : 'fail'}">${a.correct ? '✓ pass' : '✕ fail'}</span>`;
+    table.appendChild(row);
+  });
+
+  document.getElementById('rCta').href = COURSE_URL;
+}
+
+function restartQuiz(){
+  showScreen('screen-intro');
+  document.getElementById('progressFill').style.width = '0%';
+}
+</script>
+
+</body>
+</html>
