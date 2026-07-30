@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practice & Skill Checks — Anuradha Agarwal</title>
+<meta property="og:title" content="Practice & Skill Checks — Anuradha Agarwal">
+<meta property="og:description" content="Interactive quizzes and skill checks across all courses — start with Playwright + TypeScript.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0E1116; --panel:#161B22; --panel-2:#1C2230; --border:#2A3141;
+    --text:#E6E9EF; --text-dim:#8B93A7; --text-faint:#5B6478;
+    --blue:#5B9FE0; --blue-dim:#1B2B3D;
+    --mono:'IBM Plex Mono', monospace; --sans:'Inter', -apple-system, sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--bg); color:var(--text); font-family:var(--sans); min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; line-height:1.5;}
+  .window{width:100%; max-width:640px; background:var(--panel); border:1px solid var(--border); border-radius:10px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.4);}
+  .titlebar{background:var(--panel-2); border-bottom:1px solid var(--border); padding:12px 16px; display:flex; align-items:center; gap:10px;}
+  .dot{width:11px; height:11px; border-radius:50%;}
+  .dot.r{background:#F0625A;} .dot.a{background:#F5B942;} .dot.g{background:#4ADE80;}
+  .filename{font-family:var(--mono); font-size:12.5px; color:var(--text-dim); margin-left:8px;}
+  .filename b{color:var(--text); font-weight:500;}
+  .content{padding:32px 28px 28px 28px;}
+  .eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:0.06em; color:var(--blue); text-transform:uppercase; margin-bottom:14px; display:flex; align-items:center; gap:8px;}
+  .eyebrow::before{content:"▶"; font-size:10px;}
+  h1{font-size:24px; font-weight:700; letter-spacing:-0.01em; margin-bottom:10px;}
+  .intro-p{color:var(--text-dim); font-size:14.5px; margin-bottom:28px; max-width:48ch;}
+  .track-list{display:flex; flex-direction:column; gap:12px;}
+  .track-card{display:flex; align-items:center; gap:16px; text-decoration:none; background:var(--panel-2); border:1px solid var(--border); border-radius:12px; padding:20px 22px; transition:border-color .15s ease, transform .15s ease;}
+  .track-card:hover{border-color:var(--blue); transform:translateX(2px);}
+  .track-icon{width:48px; height:48px; border-radius:10px; background:var(--blue-dim); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0;}
+  .track-title{font-size:16px; font-weight:600; margin-bottom:2px;}
+  .track-desc{font-size:13px; color:var(--text-dim);}
+  .track-arrow{margin-left:auto; color:var(--text-faint); font-size:18px;}
+  .track-card.soon{border-style:dashed; pointer-events:none; opacity:0.55;}
+  .track-card.soon:hover{transform:none;}
+</style>
+</head>
+<body>
+<div class="window">
+  <div class="titlebar"><div class="dot r"></div><div class="dot a"></div><div class="dot g"></div><span class="filename">practice-skills<b>/</b></span></div>
+  <div class="content">
+    <div class="eyebrow">quiz home</div>
+    <h1>Practice &amp; skill checks</h1>
+    <p class="intro-p">Pick a track to see its starting-point check and section-by-section quizzes.</p>
+    <div class="track-list">
+      <a class="track-card" href="playwright-ts/hub.html">
+        <div class="track-icon">🎭</div>
+        <div><div class="track-title">Playwright + TypeScript</div><div class="track-desc">Starting-point check + 14 section quizzes</div></div>
+        <div class="track-arrow">→</div>
+      </a>
+      <div class="track-card soon">
+        <div class="track-icon">➕</div>
+        <div><div class="track-title" style="color:var(--text-dim);">More tracks coming</div><div class="track-desc">Future courses will land here</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
