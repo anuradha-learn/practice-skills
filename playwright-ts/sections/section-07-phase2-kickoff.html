@@ -1,0 +1,529 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 7: Phase 2 Kickoff — Quiz</title>
+<meta property="og:title" content="Phase 2 Kickoff — Strategy & Structure — Section Quiz">
+<meta property="og:description" content="6 questions on why Phase 1 won't scale, base framework setup, folder structure, tagging strategy, and Git/GitHub, from Anuradha Agarwal's Playwright + TypeScript course.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://www.anuradhaagarwal.com/quiz-share-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Phase 2 Kickoff — Strategy & Structure — Section Quiz">
+<meta name="twitter:description" content="6 questions on why Phase 1 won't scale, base framework setup, folder structure, tagging, and Git/GitHub.">
+<meta name="twitter:image" content="https://www.anuradhaagarwal.com/quiz-share-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F7F8FA;
+    --panel: #FFFFFF;
+    --panel-2: #F7F8FA;
+    --border: #E2E6ED;
+    --text: #17203A;
+    --text-dim: #5B6478;
+    --text-faint: #8B93A7;
+    --orange: #E8792A;
+    --orange-text: #C85F14;
+    --orange-tint: #FDF1E7;
+    --green: #1C9A5A;
+    --green-dim: #E9F9F0;
+    --red: #D6493F;
+    --red-dim: #FBEAE8;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 24px;
+    line-height:1.5;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+
+  .window{
+    width:100%;
+    max-width:640px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow: 0 8px 30px rgba(23,32,58,0.08);
+  }
+
+  .titlebar{
+    background:var(--panel-2);
+    border-bottom:1px solid var(--border);
+    padding:12px 16px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .dot{width:11px; height:11px; border-radius:50%;}
+  .dot.r{background:#F0625A;}
+  .dot.a{background:#F5B942;}
+  .dot.g{background:#4ADE80;}
+  .filename{
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--text-dim);
+    margin-left:8px;
+  }
+  .filename b{color:var(--text); font-weight:500;}
+  .backlink{margin-left:auto; font-family:var(--mono); font-size:11.5px; color:var(--text-faint); text-decoration:none;}
+
+  .progressbar{
+    height:3px;
+    background:var(--border);
+    position:relative;
+    overflow:hidden;
+  }
+  .progressbar-fill{
+    height:100%;
+    background:var(--orange);
+    width:0%;
+    transition:width 0.4s ease;
+  }
+
+  .content{
+    padding:32px 28px 28px 28px;
+  }
+
+  /* ---- Intro screen ---- */
+  .intro .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:0.06em;
+    color:var(--orange-text);
+    text-transform:uppercase;
+    margin-bottom:14px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .eyebrow::before{content:"▶"; font-size:10px;}
+  .intro h1{
+    font-size:25px;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    margin-bottom:12px;
+    color:var(--text);
+  }
+  .intro p{
+    color:var(--text-dim);
+    font-size:15px;
+    margin-bottom:24px;
+    max-width:46ch;
+  }
+  .meta-row{
+    display:flex;
+    gap:20px;
+    margin-bottom:28px;
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--text-faint);
+  }
+  .meta-row span b{color:var(--text-dim); font-weight:500;}
+
+  .btn{
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:14.5px;
+    border:none;
+    border-radius:7px;
+    padding:13px 22px;
+    cursor:pointer;
+    transition:transform 0.15s ease, background 0.15s ease;
+  }
+  .btn:focus-visible{outline:2px solid var(--orange); outline-offset:2px;}
+  .btn-primary{
+    background:var(--orange);
+    color:#fff;
+  }
+  .btn-primary:hover{transform:translateY(-1px); background:#D66A1E;}
+  .btn-ghost{
+    background:#fff;
+    color:var(--text);
+    border:1px solid var(--border);
+  }
+  .btn-ghost:hover{transform:translateY(-1px); background:var(--panel-2);}
+
+  /* ---- Question screen ---- */
+  .qmeta{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--text-faint);
+    margin-bottom:18px;
+  }
+  .qmeta .tag{
+    color:var(--orange-text);
+    background:var(--orange-tint);
+    padding:3px 9px;
+    border-radius:5px;
+    font-size:11px;
+  }
+  .question-text{
+    font-size:18px;
+    font-weight:600;
+    line-height:1.4;
+    margin-bottom:22px;
+    color:var(--text);
+  }
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:22px;
+  }
+  .option{
+    text-align:left;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px 16px;
+    color:var(--text);
+    font-family:var(--sans);
+    font-size:14.5px;
+    cursor:pointer;
+    transition:border-color 0.15s ease, background 0.15s ease;
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+  }
+  .option:hover:not(:disabled){border-color:var(--text-faint);}
+  .option:focus-visible{outline:2px solid var(--orange); outline-offset:2px;}
+  .option-letter{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--text-faint);
+    background:var(--panel-2);
+    border:1px solid var(--border);
+    border-radius:4px;
+    width:22px; height:22px;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+    margin-top:1px;
+  }
+  .option.correct{border-color:var(--green); background:var(--green-dim);}
+  .option.correct .option-letter{background:var(--green); color:#fff; border-color:var(--green);}
+  .option.incorrect{border-color:var(--red); background:var(--red-dim);}
+  .option.incorrect .option-letter{background:var(--red); color:#fff; border-color:var(--red);}
+  .option:disabled{cursor:default;}
+  .option:disabled:not(.correct):not(.incorrect){opacity:0.5;}
+
+  .explain{
+    display:none;
+    font-size:13.5px;
+    color:var(--text-dim);
+    background:var(--panel-2);
+    border-left:3px solid var(--green);
+    border-radius:0 6px 6px 0;
+    padding:12px 14px;
+    margin-bottom:22px;
+    line-height:1.55;
+  }
+  .explain.show{display:block;}
+  .explain b{color:var(--text);}
+
+  .nav-row{display:flex; justify-content:flex-end;}
+
+  /* ---- Result screen ---- */
+  .result .eyebrow{
+    font-family:var(--mono); font-size:12px; letter-spacing:0.06em;
+    text-transform:uppercase; margin-bottom:10px; color:var(--text-faint);
+  }
+  .score-line{
+    display:flex; align-items:baseline; gap:10px; margin-bottom:6px;
+  }
+  .score-big{font-family:var(--mono); font-size:44px; font-weight:700; color:var(--text);}
+  .score-of{font-family:var(--mono); font-size:16px; color:var(--text-faint);}
+  .tier-title{font-size:21px; font-weight:700; margin-bottom:10px; color:var(--text);}
+  .tier-desc{color:var(--text-dim); font-size:14.5px; margin-bottom:24px; max-width:48ch;}
+
+  .report-table{
+    border:1px solid var(--border);
+    border-radius:8px;
+    overflow:hidden;
+    margin-bottom:26px;
+  }
+  .report-row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:10px 14px;
+    font-family:var(--mono); font-size:12.5px;
+    border-bottom:1px solid var(--border);
+  }
+  .report-row:last-child{border-bottom:none;}
+  .report-row .label{color:var(--text-dim);}
+  .pass{color:var(--green);}
+  .fail{color:var(--red);}
+
+  .cta-row{display:flex; gap:10px; flex-wrap:wrap;}
+  .btn-primary.cta{padding:14px 24px;}
+
+  .screen{display:none;}
+  .screen.active{display:block;}
+
+  @media (max-width:480px){
+    .content{padding:24px 18px 20px 18px;}
+    .intro h1{font-size:21px;}
+    .score-big{font-size:36px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="window">
+  <div class="titlebar">
+    <div class="dot r"></div><div class="dot a"></div><div class="dot g"></div>
+    <span class="filename">section-07<b>.spec.ts</b></span>
+    <a href="../hub.html" class="backlink">← back to track</a>
+  </div>
+  <div class="progressbar"><div class="progressbar-fill" id="progressFill"></div></div>
+
+  <div class="content">
+
+    <!-- INTRO -->
+    <div class="screen active" id="screen-intro">
+      <div class="intro">
+        <div class="eyebrow">section 7 · phase 2 kickoff</div>
+        <h1>Strategy &amp; Structure</h1>
+        <p>6 questions on why Phase 1's approach won't scale, setting up a real base framework, folder structure and tagging strategy, and why Git/GitHub matter for test code specifically.</p>
+        <div class="meta-row">
+          <span><b>6</b> questions</span>
+          <span><b>~90</b> sec</span>
+          <span><b>0</b> fluff</span>
+        </div>
+        <button class="btn btn-primary" onclick="startQuiz()">Run test suite →</button>
+      </div>
+    </div>
+
+    <!-- QUESTION -->
+    <div class="screen" id="screen-question">
+      <div class="qmeta">
+        <span id="qCounter">test 1 / 6</span>
+        <span class="tag" id="qTag">why phase 1 won't scale</span>
+      </div>
+      <div class="question-text" id="qText"></div>
+      <div class="options" id="qOptions"></div>
+      <div class="explain" id="qExplain"></div>
+      <div class="nav-row">
+        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next test →</button>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div class="screen" id="screen-result">
+      <div class="result">
+        <div class="eyebrow" id="rSuite">test suite complete</div>
+        <div class="score-line">
+          <span class="score-big" id="rScore">0</span>
+          <span class="score-of">/ 6 passed</span>
+        </div>
+        <div class="tier-title" id="rTier"></div>
+        <div class="tier-desc" id="rDesc"></div>
+        <div class="report-table" id="rTable"></div>
+        <div class="cta-row">
+          <a class="btn btn-primary cta" id="rCta" href="#" target="_blank" rel="noopener">See the full course →</a>
+          <button class="btn btn-ghost" onclick="restartQuiz()">Run again</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const COURSE_URL = "https://www.udemy.com/course/playwright-automation-basics-to-advance-typescript/?referralCode=EB1B083AE4ED6DB00852";
+
+const QUESTIONS = [
+  {
+    tag: "why phase 1 won't scale",
+    text: "What's a core reason ad-hoc test scripts, like Phase 1's approach, struggle to scale to a real project?",
+    options: [
+      "They run too slowly to be useful",
+      "Without structure, duplicated logic and inconsistent patterns multiply as more tests get added, making maintenance harder over time",
+      "Phase 1 tests can't use TypeScript",
+      "They can only test one page ever"
+    ],
+    correct: 1,
+    explain: "Phase 1's tests worked fine at a small scale — the problems only show up once there are dozens of tests repeating the same patterns with no shared structure to hold them together."
+  },
+  {
+    tag: "base framework",
+    text: "Why set up a 'base framework' at the start of Phase 2, rather than continuing to build on Phase 1's files?",
+    options: [
+      "It's required by Playwright's licensing",
+      "It establishes a clean, scalable foundation intentionally designed for growth, instead of retrofitting structure onto ad-hoc code",
+      "Base frameworks are only for API testing",
+      "It removes the need for a config file"
+    ],
+    correct: 1,
+    explain: "Retrofitting structure onto existing messy code is genuinely harder than starting with structure in place. This is the deliberate reset point before the framework grows further."
+  },
+  {
+    tag: "folder structure",
+    text: "Why does folder structure and naming convention matter as a test suite grows?",
+    options: [
+      "Playwright requires specific folder names to run at all",
+      "A consistent, predictable structure makes it much easier for anyone — including future you — to find and understand tests",
+      "Folder structure has no real impact on maintainability",
+      "It only matters for CI/CD, not local development"
+    ],
+    correct: 1,
+    explain: "Six months from now, you're the person who has to find a specific test fast. Predictable structure is what makes that possible instead of a frustrating search."
+  },
+  {
+    tag: "tagging strategy",
+    text: "What's the practical benefit of a tagging strategy, like @smoke or @regression, for tests?",
+    options: [
+      "Tags make individual tests run faster",
+      "Tags let you selectively run a relevant subset of tests — like just smoke tests — instead of the entire suite every time",
+      "Tags are purely cosmetic and don't affect execution",
+      "Every test must have every tag"
+    ],
+    correct: 1,
+    explain: "Not every situation calls for running the full suite. Tags let you run exactly the slice you need — quick smoke checks before a deploy, or the full regression suite overnight."
+  },
+  {
+    tag: "Git/GitHub",
+    text: "Why set up Git and GitHub for a test framework, not just keep it as local files?",
+    options: [
+      "Git is required to run Playwright tests",
+      "Version control tracks changes over time and enables collaboration, backup, and CI/CD integration",
+      "GitHub is only needed for production application code, not test code",
+      "Git slows down test execution"
+    ],
+    correct: 1,
+    explain: "A test framework that only lives on one laptop can't be reviewed, shared, backed up, or plugged into a CI pipeline. Version control is what makes it a real, team-usable asset."
+  },
+  {
+    tag: "pushing the framework",
+    text: "What's a meaningful first milestone once the framework is pushed to a repo?",
+    options: [
+      "The framework is now complete and needs no further changes",
+      "The framework now has a real foundation others — or CI systems — can pull, build on, and extend going forward",
+      "Pushing to GitHub automatically runs all tests",
+      "The repo replaces the need for a config file"
+    ],
+    correct: 1,
+    explain: "This is a starting line, not a finish line — everything from fixtures onward in this course gets built on top of exactly this pushed foundation."
+  }
+];
+
+let current = 0;
+let score = 0;
+let answers = [];
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function startQuiz(){
+  current = 0; score = 0; answers = [];
+  showScreen('screen-question');
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q = QUESTIONS[current];
+  document.getElementById('qCounter').textContent = `test ${current + 1} / ${QUESTIONS.length}`;
+  document.getElementById('qTag').textContent = q.tag;
+  document.getElementById('qText').textContent = q.text;
+  document.getElementById('progressFill').style.width = `${(current / QUESTIONS.length) * 100}%`;
+
+  const optsEl = document.getElementById('qOptions');
+  optsEl.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span>${opt}</span>`;
+    btn.onclick = () => selectAnswer(i);
+    optsEl.appendChild(btn);
+  });
+
+  document.getElementById('qExplain').classList.remove('show');
+  document.getElementById('nextBtn').disabled = true;
+  document.getElementById('nextBtn').textContent = current === QUESTIONS.length - 1 ? 'See results →' : 'Next test →';
+}
+
+function selectAnswer(i){
+  const q = QUESTIONS[current];
+  const opts = document.querySelectorAll('#qOptions .option');
+  opts.forEach((o, idx) => {
+    o.disabled = true;
+    if (idx === q.correct) o.classList.add('correct');
+    else if (idx === i) o.classList.add('incorrect');
+  });
+  const correct = (i === q.correct);
+  if (correct) score++;
+  answers.push({ tag: q.tag, correct });
+
+  const ex = document.getElementById('qExplain');
+  ex.innerHTML = `<b>${correct ? 'Correct.' : 'Not quite.'}</b> ${q.explain}`;
+  ex.classList.add('show');
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function nextQuestion(){
+  current++;
+  if (current >= QUESTIONS.length){
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResults(){
+  document.getElementById('progressFill').style.width = '100%';
+  showScreen('screen-result');
+  document.getElementById('rScore').textContent = score;
+
+  let tier, desc;
+  if (score >= 5){
+    tier = "Ready for Phase 2";
+    desc = "You understand why this reset happens, not just that it happens. That context makes everything from fixtures onward feel like a natural next step, not a random new topic.";
+  } else if (score >= 3){
+    tier = "Good Grounding";
+    desc = "You've got the shape of it. Tagging strategy and folder structure are worth another look — small decisions here save real time later.";
+  } else {
+    tier = "Quick Revisit Recommended";
+    desc = "This section is short but foundational for everything that follows. A quick rewatch before diving into fixtures will make Phase 2 click faster.";
+  }
+  document.getElementById('rTier').textContent = tier;
+  document.getElementById('rDesc').textContent = desc;
+
+  const table = document.getElementById('rTable');
+  table.innerHTML = '';
+  answers.forEach(a => {
+    const row = document.createElement('div');
+    row.className = 'report-row';
+    row.innerHTML = `<span class="label">${a.tag}</span><span class="${a.correct ? 'pass' : 'fail'}">${a.correct ? '✓ pass' : '✕ fail'}</span>`;
+    table.appendChild(row);
+  });
+
+  document.getElementById('rCta').href = COURSE_URL;
+}
+
+function restartQuiz(){
+  showScreen('screen-intro');
+  document.getElementById('progressFill').style.width = '0%';
+}
+</script>
+
+</body>
+</html>

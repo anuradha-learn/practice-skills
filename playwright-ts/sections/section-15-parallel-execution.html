@@ -1,0 +1,553 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section 15: Framework Review & Parallel Execution — Quiz</title>
+<meta property="og:title" content="Framework Review & Parallel Execution — Section Quiz">
+<meta property="og:description" content="8 questions on the AI framework review, workers, scheduling, execution modes, and why frameworks fail during parallel execution, from Anuradha Agarwal's Playwright + TypeScript automation course.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://www.anuradhaagarwal.com/quiz-share-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Framework Review & Parallel Execution — Section Quiz">
+<meta name="twitter:description" content="8 questions on the AI framework review, workers, scheduling, execution modes, and why frameworks fail during parallel execution.">
+<meta name="twitter:image" content="https://www.anuradhaagarwal.com/quiz-share-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F7F8FA;
+    --panel: #FFFFFF;
+    --panel-2: #F7F8FA;
+    --border: #E2E6ED;
+    --text: #17203A;
+    --text-dim: #5B6478;
+    --text-faint: #8B93A7;
+    --orange: #E8792A;
+    --orange-text: #C85F14;
+    --orange-tint: #FDF1E7;
+    --green: #1C9A5A;
+    --green-dim: #E9F9F0;
+    --red: #D6493F;
+    --red-dim: #FBEAE8;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 24px;
+    line-height:1.5;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+
+  .window{
+    width:100%;
+    max-width:640px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow: 0 8px 30px rgba(23,32,58,0.08);
+  }
+
+  .titlebar{
+    background:var(--panel-2);
+    border-bottom:1px solid var(--border);
+    padding:12px 16px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .dot{width:11px; height:11px; border-radius:50%;}
+  .dot.r{background:#F0625A;}
+  .dot.a{background:#F5B942;}
+  .dot.g{background:#4ADE80;}
+  .filename{
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--text-dim);
+    margin-left:8px;
+  }
+  .filename b{color:var(--text); font-weight:500;}
+  .backlink{margin-left:auto; font-family:var(--mono); font-size:11.5px; color:var(--text-faint); text-decoration:none;}
+
+  .progressbar{
+    height:3px;
+    background:var(--border);
+    position:relative;
+    overflow:hidden;
+  }
+  .progressbar-fill{
+    height:100%;
+    background:var(--orange);
+    width:0%;
+    transition:width 0.4s ease;
+  }
+
+  .content{
+    padding:32px 28px 28px 28px;
+  }
+
+  /* ---- Intro screen ---- */
+  .intro .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:0.06em;
+    color:var(--orange-text);
+    text-transform:uppercase;
+    margin-bottom:14px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .eyebrow::before{content:"▶"; font-size:10px;}
+  .intro h1{
+    font-size:25px;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    margin-bottom:12px;
+    color:var(--text);
+  }
+  .intro p{
+    color:var(--text-dim);
+    font-size:15px;
+    margin-bottom:24px;
+    max-width:46ch;
+  }
+  .meta-row{
+    display:flex;
+    gap:20px;
+    margin-bottom:28px;
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--text-faint);
+  }
+  .meta-row span b{color:var(--text-dim); font-weight:500;}
+
+  .btn{
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:14.5px;
+    border:none;
+    border-radius:7px;
+    padding:13px 22px;
+    cursor:pointer;
+    transition:transform 0.15s ease, background 0.15s ease;
+  }
+  .btn:focus-visible{outline:2px solid var(--orange); outline-offset:2px;}
+  .btn-primary{
+    background:var(--orange);
+    color:#fff;
+  }
+  .btn-primary:hover{transform:translateY(-1px); background:#D66A1E;}
+  .btn-ghost{
+    background:#fff;
+    color:var(--text);
+    border:1px solid var(--border);
+  }
+  .btn-ghost:hover{transform:translateY(-1px); background:var(--panel-2);}
+
+  /* ---- Question screen ---- */
+  .qmeta{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--text-faint);
+    margin-bottom:18px;
+  }
+  .qmeta .tag{
+    color:var(--orange-text);
+    background:var(--orange-tint);
+    padding:3px 9px;
+    border-radius:5px;
+    font-size:11px;
+  }
+  .question-text{
+    font-size:18px;
+    font-weight:600;
+    line-height:1.4;
+    margin-bottom:22px;
+    color:var(--text);
+  }
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:22px;
+  }
+  .option{
+    text-align:left;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px 16px;
+    color:var(--text);
+    font-family:var(--sans);
+    font-size:14.5px;
+    cursor:pointer;
+    transition:border-color 0.15s ease, background 0.15s ease;
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+  }
+  .option:hover:not(:disabled){border-color:var(--text-faint);}
+  .option:focus-visible{outline:2px solid var(--orange); outline-offset:2px;}
+  .option-letter{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--text-faint);
+    background:var(--panel-2);
+    border:1px solid var(--border);
+    border-radius:4px;
+    width:22px; height:22px;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+    margin-top:1px;
+  }
+  .option.correct{border-color:var(--green); background:var(--green-dim);}
+  .option.correct .option-letter{background:var(--green); color:#fff; border-color:var(--green);}
+  .option.incorrect{border-color:var(--red); background:var(--red-dim);}
+  .option.incorrect .option-letter{background:var(--red); color:#fff; border-color:var(--red);}
+  .option:disabled{cursor:default;}
+  .option:disabled:not(.correct):not(.incorrect){opacity:0.5;}
+
+  .explain{
+    display:none;
+    font-size:13.5px;
+    color:var(--text-dim);
+    background:var(--panel-2);
+    border-left:3px solid var(--green);
+    border-radius:0 6px 6px 0;
+    padding:12px 14px;
+    margin-bottom:22px;
+    line-height:1.55;
+  }
+  .explain.show{display:block;}
+  .explain b{color:var(--text);}
+
+  .nav-row{display:flex; justify-content:flex-end;}
+
+  /* ---- Result screen ---- */
+  .result .eyebrow{
+    font-family:var(--mono); font-size:12px; letter-spacing:0.06em;
+    text-transform:uppercase; margin-bottom:10px; color:var(--text-faint);
+  }
+  .score-line{
+    display:flex; align-items:baseline; gap:10px; margin-bottom:6px;
+  }
+  .score-big{font-family:var(--mono); font-size:44px; font-weight:700; color:var(--text);}
+  .score-of{font-family:var(--mono); font-size:16px; color:var(--text-faint);}
+  .tier-title{font-size:21px; font-weight:700; margin-bottom:10px; color:var(--text);}
+  .tier-desc{color:var(--text-dim); font-size:14.5px; margin-bottom:24px; max-width:48ch;}
+
+  .report-table{
+    border:1px solid var(--border);
+    border-radius:8px;
+    overflow:hidden;
+    margin-bottom:26px;
+  }
+  .report-row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:10px 14px;
+    font-family:var(--mono); font-size:12.5px;
+    border-bottom:1px solid var(--border);
+  }
+  .report-row:last-child{border-bottom:none;}
+  .report-row .label{color:var(--text-dim);}
+  .pass{color:var(--green);}
+  .fail{color:var(--red);}
+
+  .cta-row{display:flex; gap:10px; flex-wrap:wrap;}
+  .btn-primary.cta{padding:14px 24px;}
+
+  .screen{display:none;}
+  .screen.active{display:block;}
+
+  @media (max-width:480px){
+    .content{padding:24px 18px 20px 18px;}
+    .intro h1{font-size:21px;}
+    .score-big{font-size:36px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="window">
+  <div class="titlebar">
+    <div class="dot r"></div><div class="dot a"></div><div class="dot g"></div>
+    <span class="filename">section-15<b>.spec.ts</b></span>
+    <a href="../hub.html" class="backlink">← back to track</a>
+  </div>
+  <div class="progressbar"><div class="progressbar-fill" id="progressFill"></div></div>
+
+  <div class="content">
+
+    <!-- INTRO -->
+    <div class="screen active" id="screen-intro">
+      <div class="intro">
+        <div class="eyebrow">section 15 · parallel execution</div>
+        <h1>Framework Review &amp; Parallel Execution</h1>
+        <p>8 questions on the AI-assisted framework review, workers and scheduling, execution modes, and the real reasons frameworks fail once tests stop running one at a time.</p>
+        <div class="meta-row">
+          <span><b>8</b> questions</span>
+          <span><b>~2.5</b> min</span>
+          <span><b>0</b> fluff</span>
+        </div>
+        <button class="btn btn-primary" onclick="startQuiz()">Run test suite →</button>
+      </div>
+    </div>
+
+    <!-- QUESTION -->
+    <div class="screen" id="screen-question">
+      <div class="qmeta">
+        <span id="qCounter">test 1 / 8</span>
+        <span class="tag" id="qTag">framework review</span>
+      </div>
+      <div class="question-text" id="qText"></div>
+      <div class="options" id="qOptions"></div>
+      <div class="explain" id="qExplain"></div>
+      <div class="nav-row">
+        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next test →</button>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div class="screen" id="screen-result">
+      <div class="result">
+        <div class="eyebrow" id="rSuite">test suite complete</div>
+        <div class="score-line">
+          <span class="score-big" id="rScore">0</span>
+          <span class="score-of">/ 8 passed</span>
+        </div>
+        <div class="tier-title" id="rTier"></div>
+        <div class="tier-desc" id="rDesc"></div>
+        <div class="report-table" id="rTable"></div>
+        <div class="cta-row">
+          <a class="btn btn-primary cta" id="rCta" href="#" target="_blank" rel="noopener">See the full course →</a>
+          <button class="btn btn-ghost" onclick="restartQuiz()">Run again</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const COURSE_URL = "https://www.udemy.com/course/playwright-automation-basics-to-advance-typescript/?referralCode=EB1B083AE4ED6DB00852";
+
+const QUESTIONS = [
+  {
+    tag: "framework review",
+    text: "What was the actual purpose of running an AI-assisted framework review before building parallel execution content?",
+    options: [
+      "To generate marketing content only",
+      "To identify real weak points in the existing framework — like shared state and fixture design — before assuming a config change would fix everything",
+      "AI reviews replace the need for any further testing",
+      "The review was purely theoretical, not based on the real framework"
+    ],
+    correct: 1,
+    explain: "The review was run against the actual working framework — auth, fixtures, cart, checkout — before writing a single lecture, so the content that followed was grounded in real findings, not guesswork."
+  },
+  {
+    tag: "workers",
+    text: "What is a Playwright 'worker,' at a basic level?",
+    options: [
+      "A person who writes tests",
+      "An isolated process that runs a set of test files — multiple workers let tests run at the same time",
+      "A type of assertion",
+      "A CI-only concept that doesn't exist locally"
+    ],
+    correct: 1,
+    explain: "A worker is what actually does the running — more workers means more test files executing concurrently, which is the entire mechanism behind parallel execution."
+  },
+  {
+    tag: "scheduling",
+    text: "How does Playwright generally distribute test files across workers?",
+    options: [
+      "Every worker runs every test file",
+      "Test files are distributed across available workers so different files run concurrently, not the same file split mid-way",
+      "Only one worker is ever used regardless of config",
+      "Distribution is entirely random and unpredictable"
+    ],
+    correct: 1,
+    explain: "Understanding this distribution is what makes the later failure modes make sense — two different files, running at the same time on different workers, is exactly where shared-state collisions happen."
+  },
+  {
+    tag: "execution modes",
+    text: "What's the difference between Playwright's default parallel mode and fullyParallel mode?",
+    options: [
+      "There is no real difference",
+      "Default parallel mode runs different test files concurrently, while fullyParallel also runs individual tests within the same file concurrently",
+      "fullyParallel disables parallel execution entirely",
+      "Serial mode is the fastest of the three"
+    ],
+    correct: 1,
+    explain: "This is a meaningful escalation, not just a toggle — fullyParallel pushes concurrency down to the individual test level, which surfaces isolation problems that file-level parallelism alone might not."
+  },
+  {
+    tag: "why frameworks fail",
+    text: "What's the most common root cause when a framework 'fails during parallel execution' after working fine sequentially?",
+    options: [
+      "The browser version is outdated",
+      "Shared state between tests — like the same cart, login session, or record — that was never actually isolated, just never caught before",
+      "Parallel execution itself is inherently broken",
+      "It's always a network issue"
+    ],
+    correct: 1,
+    explain: "The tests weren't actually broken before — they were just never run at the same time, so a hidden dependency on shared state never had a chance to collide until now."
+  },
+  {
+    tag: "review findings",
+    text: "In the actual framework review, what did the fixture design and test isolation findings have in common as a root cause?",
+    options: [
+      "They were unrelated, isolated one-off bugs",
+      "Several traced back to shared application state — tests unintentionally depending on data other tests also touched",
+      "They were both caused by outdated dependencies",
+      "They only affected API tests, never UI"
+    ],
+    correct: 1,
+    explain: "Three separate-looking findings — auth, cart, checkout — all traced back to the same underlying pattern: shared application state. One root cause showing up in multiple places."
+  },
+  {
+    tag: "the real lesson",
+    text: "What's the key takeaway about just adding more workers to speed up a suite?",
+    options: [
+      "More workers always makes everything faster with no downside",
+      "Adding workers without fixing underlying isolation issues just makes existing weaknesses collide faster and more visibly",
+      "Workers have no effect on execution time",
+      "Workers must be manually assigned to specific test files"
+    ],
+    correct: 1,
+    explain: "This is the central idea of the whole section — workers: 4 isn't a fix, it's a stress test. It doesn't create new problems, it just makes existing ones impossible to ignore."
+  },
+  {
+    tag: "serial tagging",
+    text: "Why might a test involving usage-limited coupons be deliberately tagged to run in serial rather than parallel?",
+    options: [
+      "Serial tagging is required for all tests by default",
+      "Some tests depend on a shared, limited resource — like a coupon with a usage cap — where parallel runs could interfere with each other and give false results",
+      "Serial tagging disables the test entirely",
+      "It's purely a stylistic choice with no functional reason"
+    ],
+    correct: 1,
+    explain: "Not every test can be parallelized safely — a coupon with a fixed usage limit is exactly the kind of shared resource where running in parallel could cause tests to compete and produce misleading failures."
+  }
+];
+
+let current = 0;
+let score = 0;
+let answers = [];
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function startQuiz(){
+  current = 0; score = 0; answers = [];
+  showScreen('screen-question');
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q = QUESTIONS[current];
+  document.getElementById('qCounter').textContent = `test ${current + 1} / ${QUESTIONS.length}`;
+  document.getElementById('qTag').textContent = q.tag;
+  document.getElementById('qText').textContent = q.text;
+  document.getElementById('progressFill').style.width = `${(current / QUESTIONS.length) * 100}%`;
+
+  const optsEl = document.getElementById('qOptions');
+  optsEl.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span>${opt}</span>`;
+    btn.onclick = () => selectAnswer(i);
+    optsEl.appendChild(btn);
+  });
+
+  document.getElementById('qExplain').classList.remove('show');
+  document.getElementById('nextBtn').disabled = true;
+  document.getElementById('nextBtn').textContent = current === QUESTIONS.length - 1 ? 'See results →' : 'Next test →';
+}
+
+function selectAnswer(i){
+  const q = QUESTIONS[current];
+  const opts = document.querySelectorAll('#qOptions .option');
+  opts.forEach((o, idx) => {
+    o.disabled = true;
+    if (idx === q.correct) o.classList.add('correct');
+    else if (idx === i) o.classList.add('incorrect');
+  });
+  const correct = (i === q.correct);
+  if (correct) score++;
+  answers.push({ tag: q.tag, correct });
+
+  const ex = document.getElementById('qExplain');
+  ex.innerHTML = `<b>${correct ? 'Correct.' : 'Not quite.'}</b> ${q.explain}`;
+  ex.classList.add('show');
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function nextQuestion(){
+  current++;
+  if (current >= QUESTIONS.length){
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResults(){
+  document.getElementById('progressFill').style.width = '100%';
+  showScreen('screen-result');
+  document.getElementById('rScore').textContent = score;
+
+  let tier, desc;
+  if (score >= 7){
+    tier = "You Get Why This Section Exists";
+    desc = "You understand this isn't a config lecture — it's about the real, sometimes hidden weaknesses that only surface once tests stop running one at a time. That understanding is the whole point.";
+  } else if (score >= 5){
+    tier = "Solid Grounding";
+    desc = "You've got the shape of it. The shared-state root cause is worth another look — it's the single idea that explains almost every parallel-execution failure you'll encounter.";
+  } else {
+    tier = "Worth a Focused Revisit";
+    desc = "This is genuinely one of the more advanced sections in the course. Worth rewatching the framework review and the 'why frameworks fail' lecture together — they're meant to be understood as one story.";
+  }
+  document.getElementById('rTier').textContent = tier;
+  document.getElementById('rDesc').textContent = desc;
+
+  const table = document.getElementById('rTable');
+  table.innerHTML = '';
+  answers.forEach(a => {
+    const row = document.createElement('div');
+    row.className = 'report-row';
+    row.innerHTML = `<span class="label">${a.tag}</span><span class="${a.correct ? 'pass' : 'fail'}">${a.correct ? '✓ pass' : '✕ fail'}</span>`;
+    table.appendChild(row);
+  });
+
+  document.getElementById('rCta').href = COURSE_URL;
+}
+
+function restartQuiz(){
+  showScreen('screen-intro');
+  document.getElementById('progressFill').style.width = '0%';
+}
+</script>
+
+</body>
+</html>
