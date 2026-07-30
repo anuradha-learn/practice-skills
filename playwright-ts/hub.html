@@ -17,6 +17,7 @@
     --bg:#F7F8FA; --panel:#FFFFFF; --panel-2:#F7F8FA; --border:#E2E6ED;
     --text:#17203A; --text-dim:#5B6478; --text-faint:#8B93A7;
     --yellow:#F5B942; --yellow-text:#A6790A; --yellow-tint:#FEF8E7;
+    --green:#1C9A5A; --green-text:#16824C; --green-tint:#E9F9F0;
     --blue:#378ADD; --blue-text:#185FA5; --blue-tint:#EAF1FB;
     --orange:#E8792A; --orange-text:#C85F14; --orange-tint:#FDF1E7;
     --mono:'IBM Plex Mono', monospace; --sans:'Inter', -apple-system, sans-serif;
@@ -42,6 +43,10 @@
   .featured-desc{font-size:13px; color:var(--text-dim); margin-bottom:14px;}
   .featured-btn{display:inline-flex; align-items:center; gap:8px; background:var(--yellow); color:#3D2B02; font-weight:700; font-size:13.5px; text-decoration:none; padding:12px 18px; border-radius:8px; transition:transform .15s ease;}
   .featured-btn:hover{transform:translateY(-1px);}
+
+  .featured-alt{background:var(--green-tint); border:1px solid #B7E3CC; border-left:3px solid var(--green); border-radius:10px; padding:20px 22px; margin-bottom:14px;}
+  .featured-alt .featured-icon{background:var(--green);}
+  .featured-alt .featured-btn{background:var(--green); color:#fff;}
 
   .course-note{display:flex; align-items:center; gap:12px; background:var(--blue-tint); border:1px solid #C3DAF2; border-left:3px solid var(--blue); border-radius:10px; padding:13px 16px; margin-bottom:30px; font-size:12.5px; color:var(--text-dim);}
   .course-note b{color:var(--blue-text);}
@@ -78,6 +83,15 @@
       </div>
       <div class="featured-desc">6 questions, ~90 seconds, no wrong answers — finds your entry point in the course.</div>
       <a class="featured-btn" href="playwright-starting-point-quiz.html">Take the starting-point check →</a>
+    </div>
+
+    <div class="featured featured-alt">
+      <div class="featured-top">
+        <div class="featured-icon">✅</div>
+        <div class="featured-title">Is Your Framework Enterprise-Ready?</div>
+      </div>
+      <div class="featured-desc">8 real scenarios — fixtures, parallel execution, CI/CD, and more, with the reasoning behind every answer.</div>
+      <a class="featured-btn" href="playwright-readiness-quiz.html">Take the framework check →</a>
     </div>
 
     <div class="course-note">
