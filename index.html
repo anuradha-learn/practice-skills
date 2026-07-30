@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,33 +14,34 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0E1116; --panel:#161B22; --panel-2:#1C2230; --border:#2A3141;
-    --text:#E6E9EF; --text-dim:#8B93A7; --text-faint:#5B6478;
-    --blue:#5B9FE0; --blue-dim:#1B2B3D;
+    --bg:#F7F8FA; --panel:#FFFFFF; --panel-2:#F7F8FA; --border:#E2E6ED;
+    --text:#17203A; --text-dim:#5B6478; --text-faint:#8B93A7;
+    --orange:#E8792A; --orange-text:#C85F14; --orange-tint:#FDF1E7;
     --mono:'IBM Plex Mono', monospace; --sans:'Inter', -apple-system, sans-serif;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   body{background:var(--bg); color:var(--text); font-family:var(--sans); min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; line-height:1.5;}
-  .window{width:100%; max-width:640px; background:var(--panel); border:1px solid var(--border); border-radius:10px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.4);}
+  .window{width:100%; max-width:640px; background:var(--panel); border:1px solid var(--border); border-radius:10px; overflow:hidden; box-shadow:0 8px 30px rgba(23,32,58,0.08);}
   .titlebar{background:var(--panel-2); border-bottom:1px solid var(--border); padding:12px 16px; display:flex; align-items:center; gap:10px;}
   .dot{width:11px; height:11px; border-radius:50%;}
   .dot.r{background:#F0625A;} .dot.a{background:#F5B942;} .dot.g{background:#4ADE80;}
   .filename{font-family:var(--mono); font-size:12.5px; color:var(--text-dim); margin-left:8px;}
   .filename b{color:var(--text); font-weight:500;}
   .content{padding:32px 28px 28px 28px;}
-  .eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:0.06em; color:var(--blue); text-transform:uppercase; margin-bottom:14px; display:flex; align-items:center; gap:8px;}
+  .eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:0.06em; color:var(--orange-text); text-transform:uppercase; margin-bottom:14px; display:flex; align-items:center; gap:8px;}
   .eyebrow::before{content:"▶"; font-size:10px;}
-  h1{font-size:24px; font-weight:700; letter-spacing:-0.01em; margin-bottom:10px;}
+  h1{font-size:24px; font-weight:700; letter-spacing:-0.01em; margin-bottom:10px; color:var(--text);}
   .intro-p{color:var(--text-dim); font-size:14.5px; margin-bottom:28px; max-width:48ch;}
   .track-list{display:flex; flex-direction:column; gap:12px;}
-  .track-card{display:flex; align-items:center; gap:16px; text-decoration:none; background:var(--panel-2); border:1px solid var(--border); border-radius:12px; padding:20px 22px; transition:border-color .15s ease, transform .15s ease;}
-  .track-card:hover{border-color:var(--blue); transform:translateX(2px);}
-  .track-icon{width:48px; height:48px; border-radius:10px; background:var(--blue-dim); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0;}
-  .track-title{font-size:16px; font-weight:600; margin-bottom:2px;}
+  .track-card{display:flex; align-items:center; gap:16px; text-decoration:none; background:var(--panel); border:1px solid var(--border); border-left:3px solid var(--orange); border-radius:10px; padding:20px 22px; transition:transform .15s ease, box-shadow .15s ease;}
+  .track-card:hover{transform:translateX(2px); box-shadow:0 4px 14px rgba(232,121,42,0.18);}
+  .track-icon{width:48px; height:48px; border-radius:10px; background:var(--orange); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0;}
+  .track-title{font-size:16px; font-weight:600; margin-bottom:2px; color:var(--text);}
   .track-desc{font-size:13px; color:var(--text-dim);}
-  .track-arrow{margin-left:auto; color:var(--text-faint); font-size:18px;}
-  .track-card.soon{border-style:dashed; pointer-events:none; opacity:0.55;}
-  .track-card.soon:hover{transform:none;}
+  .track-arrow{margin-left:auto; color:var(--orange); font-size:18px;}
+  .track-card.soon{border-left-color:var(--border); background:var(--panel-2); pointer-events:none; opacity:0.7;}
+  .track-card.soon .track-icon{background:var(--border);}
+  .track-card.soon:hover{transform:none; box-shadow:none;}
 </style>
 </head>
 <body>
