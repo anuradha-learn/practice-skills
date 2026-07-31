@@ -4,121 +4,538 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Playwright + TypeScript — Practice Track</title>
-<meta property="og:title" content="Playwright + TypeScript — Practice Track">
-<meta property="og:description" content="Find your starting point, then test yourself section by section through Anuradha Agarwal's Playwright + TypeScript automation course.">
+<title>Section 2: TypeScript Foundations — Quiz</title>
+<meta property="og:title" content="TypeScript Foundations for Playwright — Section Quiz">
+<meta property="og:description" content="7 questions on TypeScript foundations from Anuradha Agarwal's Playwright + TypeScript automation course — Beginner to Pro Framework Design.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="https://www.anuradhaagarwal.com/quiz-share-image.png">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="TypeScript Foundations for Playwright — Section Quiz">
+<meta name="twitter:description" content="7 questions on TypeScript foundations from the Playwright + TypeScript automation course.">
+<meta name="twitter:image" content="https://www.anuradhaagarwal.com/quiz-share-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#F7F8FA; --panel:#FFFFFF; --panel-2:#F7F8FA; --border:#E2E6ED;
-    --text:#17203A; --text-dim:#5B6478; --text-faint:#8B93A7;
-    --yellow:#F5B942; --yellow-text:#A6790A; --yellow-tint:#FEF8E7;
-    --green:#1C9A5A; --green-text:#16824C; --green-tint:#E9F9F0;
-    --blue:#378ADD; --blue-text:#185FA5; --blue-tint:#EAF1FB;
-    --orange:#E8792A; --orange-text:#C85F14; --orange-tint:#FDF1E7;
-    --mono:'IBM Plex Mono', monospace; --sans:'Inter', -apple-system, sans-serif;
+    --bg: #F7F8FA;
+    --panel: #FFFFFF;
+    --panel-2: #F7F8FA;
+    --border: #E2E6ED;
+    --text: #17203A;
+    --text-dim: #5B6478;
+    --text-faint: #8B93A7;
+    --orange: #E8792A;
+    --orange-text: #C85F14;
+    --orange-tint: #FDF1E7;
+    --green: #1C9A5A;
+    --green-dim: #E9F9F0;
+    --red: #D6493F;
+    --red-dim: #FBEAE8;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Inter', -apple-system, sans-serif;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
-  body{background:var(--bg); color:var(--text); font-family:var(--sans); min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; line-height:1.5;}
-  .window{width:100%; max-width:720px; background:var(--panel); border:1px solid var(--border); border-radius:10px; overflow:hidden; box-shadow:0 8px 30px rgba(23,32,58,0.08);}
-  .titlebar{background:var(--panel-2); border-bottom:1px solid var(--border); padding:12px 16px; display:flex; align-items:center; gap:10px;}
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 24px;
+    line-height:1.5;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+
+  .window{
+    width:100%;
+    max-width:640px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow: 0 8px 30px rgba(23,32,58,0.08);
+  }
+
+  .titlebar{
+    background:var(--panel-2);
+    border-bottom:1px solid var(--border);
+    padding:12px 16px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
   .dot{width:11px; height:11px; border-radius:50%;}
-  .dot.r{background:#F0625A;} .dot.a{background:#F5B942;} .dot.g{background:#4ADE80;}
-  .filename{font-family:var(--mono); font-size:12.5px; color:var(--text-dim); margin-left:8px;}
+  .dot.r{background:#F0625A;}
+  .dot.a{background:#F5B942;}
+  .dot.g{background:#4ADE80;}
+  .filename{
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--text-dim);
+    margin-left:8px;
+  }
   .filename b{color:var(--text); font-weight:500;}
   .backlink{margin-left:auto; font-family:var(--mono); font-size:11.5px; color:var(--text-faint); text-decoration:none;}
-  .content{padding:32px 28px 28px 28px;}
-  .eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:0.06em; color:var(--orange-text); text-transform:uppercase; margin-bottom:14px; display:flex; align-items:center; gap:8px;}
+
+  .progressbar{
+    height:3px;
+    background:var(--border);
+    position:relative;
+    overflow:hidden;
+  }
+  .progressbar-fill{
+    height:100%;
+    background:var(--orange);
+    width:0%;
+    transition:width 0.4s ease;
+  }
+
+  .content{
+    padding:32px 28px 28px 28px;
+  }
+
+  /* ---- Intro screen ---- */
+  .intro .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:0.06em;
+    color:var(--orange-text);
+    text-transform:uppercase;
+    margin-bottom:14px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
   .eyebrow::before{content:"▶"; font-size:10px;}
-  h1{font-size:23px; font-weight:700; letter-spacing:-0.01em; margin-bottom:24px; color:var(--text);}
+  .intro h1{
+    font-size:25px;
+    font-weight:700;
+    letter-spacing:-0.01em;
+    margin-bottom:12px;
+    color:var(--text);
+  }
+  .intro p{
+    color:var(--text-dim);
+    font-size:15px;
+    margin-bottom:24px;
+    max-width:46ch;
+  }
+  .meta-row{
+    display:flex;
+    gap:20px;
+    margin-bottom:28px;
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--text-faint);
+  }
+  .meta-row span b{color:var(--text-dim); font-weight:500;}
 
-  .featured{background:var(--yellow-tint); border:1px solid #F0DBA0; border-left:3px solid var(--yellow); border-radius:10px; padding:20px 22px; margin-bottom:14px;}
-  .featured-top{display:flex; align-items:center; gap:14px; margin-bottom:10px;}
-  .featured-icon{width:44px; height:44px; border-radius:10px; background:var(--yellow); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;}
-  .featured-title{font-size:16px; font-weight:700; color:var(--text);}
-  .featured-desc{font-size:13px; color:var(--text-dim); margin-bottom:14px;}
-  .featured-btn{display:inline-flex; align-items:center; gap:8px; background:var(--yellow); color:#3D2B02; font-weight:700; font-size:13.5px; text-decoration:none; padding:12px 18px; border-radius:8px; transition:transform .15s ease;}
-  .featured-btn:hover{transform:translateY(-1px);}
+  .btn{
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:14.5px;
+    border:none;
+    border-radius:7px;
+    padding:13px 22px;
+    cursor:pointer;
+    transition:transform 0.15s ease, background 0.15s ease;
+  }
+  .btn:focus-visible{outline:2px solid var(--orange); outline-offset:2px;}
+  .btn-primary{
+    background:var(--orange);
+    color:#fff;
+  }
+  .btn-primary:hover{transform:translateY(-1px); background:#D66A1E;}
+  .btn-ghost{
+    background:#fff;
+    color:var(--text);
+    border:1px solid var(--border);
+  }
+  .btn-ghost:hover{transform:translateY(-1px); background:var(--panel-2);}
 
-  .featured-alt{background:var(--green-tint); border:1px solid #B7E3CC; border-left:3px solid var(--green); border-radius:10px; padding:20px 22px; margin-bottom:14px;}
-  .featured-alt .featured-icon{background:var(--green);}
-  .featured-alt .featured-btn{background:var(--green); color:#fff;}
+  /* ---- Question screen ---- */
+  .qmeta{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--text-faint);
+    margin-bottom:18px;
+  }
+  .qmeta .tag{
+    color:var(--orange-text);
+    background:var(--orange-tint);
+    padding:3px 9px;
+    border-radius:5px;
+    font-size:11px;
+  }
+  .question-text{
+    font-size:18px;
+    font-weight:600;
+    line-height:1.4;
+    margin-bottom:22px;
+    color:var(--text);
+  }
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:22px;
+  }
+  .option{
+    text-align:left;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:14px 16px;
+    color:var(--text);
+    font-family:var(--sans);
+    font-size:14.5px;
+    cursor:pointer;
+    transition:border-color 0.15s ease, background 0.15s ease;
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+  }
+  .option:hover:not(:disabled){border-color:var(--text-faint);}
+  .option:focus-visible{outline:2px solid var(--orange); outline-offset:2px;}
+  .option-letter{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--text-faint);
+    background:var(--panel-2);
+    border:1px solid var(--border);
+    border-radius:4px;
+    width:22px; height:22px;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+    margin-top:1px;
+  }
+  .option.correct{border-color:var(--green); background:var(--green-dim);}
+  .option.correct .option-letter{background:var(--green); color:#fff; border-color:var(--green);}
+  .option.incorrect{border-color:var(--red); background:var(--red-dim);}
+  .option.incorrect .option-letter{background:var(--red); color:#fff; border-color:var(--red);}
+  .option:disabled{cursor:default;}
+  .option:disabled:not(.correct):not(.incorrect){opacity:0.5;}
 
-  .course-note{display:flex; align-items:center; gap:12px; background:var(--blue-tint); border:1px solid #C3DAF2; border-left:3px solid var(--blue); border-radius:10px; padding:13px 16px; margin-bottom:30px; font-size:12.5px; color:var(--text-dim);}
-  .course-note b{color:var(--blue-text);}
-  .course-note a{color:var(--blue-text); font-weight:600; text-decoration:none;}
+  .explain{
+    display:none;
+    font-size:13.5px;
+    color:var(--text-dim);
+    background:var(--panel-2);
+    border-left:3px solid var(--green);
+    border-radius:0 6px 6px 0;
+    padding:12px 14px;
+    margin-bottom:22px;
+    line-height:1.55;
+  }
+  .explain.show{display:block;}
+  .explain b{color:var(--text);}
 
-  .section-title{font-size:13px; font-weight:600; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:14px;}
-  .section-grid{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px;}
-  .sec-card{display:block; text-decoration:none; background:var(--panel-2); border:1px dashed var(--border); border-left:3px dashed #E9C09A; border-radius:9px; padding:13px 14px; opacity:0.75; cursor:default; pointer-events:none;}
-  .sec-card.live{background:var(--panel); border:1px solid var(--border); border-left:3px solid var(--orange); opacity:1; cursor:pointer; pointer-events:auto; transition:transform .15s ease, box-shadow .15s ease;}
-  .sec-card.live:hover{transform:translateX(2px); box-shadow:0 4px 14px rgba(232,121,42,0.15);}
-  .sec-meta{font-family:var(--mono); font-size:9.5px; color:var(--orange-text); margin-top:6px; font-weight:600;}
-  .sec-num{font-family:var(--mono); font-size:10.5px; color:var(--orange-text); margin-bottom:3px; font-weight:600;}
-  .sec-title{font-size:12.5px; font-weight:500; color:var(--text-dim); line-height:1.35;}
-  .sec-soon{font-family:var(--mono); font-size:9.5px; color:var(--text-faint); margin-top:6px; text-transform:uppercase; letter-spacing:0.04em;}
+  .nav-row{display:flex; justify-content:flex-end;}
+
+  /* ---- Result screen ---- */
+  .result .eyebrow{
+    font-family:var(--mono); font-size:12px; letter-spacing:0.06em;
+    text-transform:uppercase; margin-bottom:10px; color:var(--text-faint);
+  }
+  .score-line{
+    display:flex; align-items:baseline; gap:10px; margin-bottom:6px;
+  }
+  .score-big{font-family:var(--mono); font-size:44px; font-weight:700; color:var(--text);}
+  .score-of{font-family:var(--mono); font-size:16px; color:var(--text-faint);}
+  .tier-title{font-size:21px; font-weight:700; margin-bottom:10px; color:var(--text);}
+  .tier-desc{color:var(--text-dim); font-size:14.5px; margin-bottom:24px; max-width:48ch;}
+
+  .report-table{
+    border:1px solid var(--border);
+    border-radius:8px;
+    overflow:hidden;
+    margin-bottom:26px;
+  }
+  .report-row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:10px 14px;
+    font-family:var(--mono); font-size:12.5px;
+    border-bottom:1px solid var(--border);
+  }
+  .report-row:last-child{border-bottom:none;}
+  .report-row .label{color:var(--text-dim);}
+  .pass{color:var(--green);}
+  .fail{color:var(--red);}
+
+  .cta-row{display:flex; gap:10px; flex-wrap:wrap;}
+  .btn-primary.cta{padding:14px 24px;}
+
+  .screen{display:none;}
+  .screen.active{display:block;}
 
   @media (max-width:480px){
     .content{padding:24px 18px 20px 18px;}
-    .section-grid{grid-template-columns:1fr;}
+    .intro h1{font-size:21px;}
+    .score-big{font-size:36px;}
   }
 </style>
 </head>
 <body>
+
 <div class="window">
   <div class="titlebar">
     <div class="dot r"></div><div class="dot a"></div><div class="dot g"></div>
-    <span class="filename">playwright-ts<b>/</b></span>
-    <a class="backlink" href="../index.html">← quiz home</a>
+    <span class="filename">section-02<b>.spec.ts</b></span>
+    <a href="../hub.html" class="backlink">← back to track</a>
   </div>
+  <div class="progressbar"><div class="progressbar-fill" id="progressFill"></div></div>
+
   <div class="content">
-    <div class="eyebrow">practice track</div>
-    <h1>Playwright + TypeScript</h1>
 
-    <div class="featured">
-      <div class="featured-top">
-        <div class="featured-icon">🧭</div>
-        <div class="featured-title">Where Should You Actually Start?</div>
+    <!-- INTRO -->
+    <div class="screen active" id="screen-intro">
+      <div class="intro">
+        <div class="eyebrow">section 2 · foundations</div>
+        <h1>TypeScript Foundations for Playwright</h1>
+        <p>7 questions on the fundamentals this course builds everything else on top of — variables, types, control flow, functions, and why classes matter before Playwright even enters the picture.</p>
+        <div class="meta-row">
+          <span><b>7</b> questions</span>
+          <span><b>~2</b> min</span>
+          <span><b>0</b> fluff</span>
+        </div>
+        <button class="btn btn-primary" onclick="startQuiz()">Run test suite →</button>
       </div>
-      <div class="featured-desc">6 questions, ~90 seconds, no wrong answers — finds your entry point in the course.</div>
-      <a class="featured-btn" href="playwright-starting-point-quiz.html">Take the starting-point check →</a>
     </div>
 
-    <div class="featured featured-alt">
-      <div class="featured-top">
-        <div class="featured-icon">✅</div>
-        <div class="featured-title">Is Your Framework Enterprise-Ready?</div>
+    <!-- QUESTION -->
+    <div class="screen" id="screen-question">
+      <div class="qmeta">
+        <span id="qCounter">test 1 / 7</span>
+        <span class="tag" id="qTag">variables</span>
       </div>
-      <div class="featured-desc">8 real scenarios — fixtures, parallel execution, CI/CD, and more, with the reasoning behind every answer.</div>
-      <a class="featured-btn" href="playwright-readiness-quiz.html">Take the framework check →</a>
+      <div class="question-text" id="qText"></div>
+      <div class="options" id="qOptions"></div>
+      <div class="explain" id="qExplain"></div>
+      <div class="nav-row">
+        <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next test →</button>
+      </div>
     </div>
 
-    <div class="course-note">
-      🎬 Once you know your starting point — <b>see the full course:</b> <a href="https://www.udemy.com/course/playwright-automation-basics-to-advance-typescript/?referralCode=EB1B083AE4ED6DB00852" target="_blank" rel="noopener">Playwright Automation Testing: Beginner to Pro →</a>
+    <!-- RESULT -->
+    <div class="screen" id="screen-result">
+      <div class="result">
+        <div class="eyebrow" id="rSuite">test suite complete</div>
+        <div class="score-line">
+          <span class="score-big" id="rScore">0</span>
+          <span class="score-of">/ 7 passed</span>
+        </div>
+        <div class="tier-title" id="rTier"></div>
+        <div class="tier-desc" id="rDesc"></div>
+        <div class="report-table" id="rTable"></div>
+        <div class="cta-row">
+          <a class="btn btn-primary cta" id="rCta" href="#" target="_blank" rel="noopener">See the full course →</a>
+          <button class="btn btn-ghost" onclick="restartQuiz()">Run again</button>
+        </div>
+      </div>
     </div>
 
-    <div class="section-title">Section quizzes</div>
-    <div class="section-grid">
-      <a class="sec-card live" href="sections/section-02-typescript-foundations.html"><div class="sec-num">Section 2</div><div class="sec-title">TypeScript Foundations for Playwright</div><div class="sec-meta">7 questions · ~2 min</div></a>
-      <div class="sec-card"><div class="sec-num">Section 3</div><div class="sec-title">Why Playwright</div><div class="sec-soon">coming soon</div></div>
-      <div class="sec-card"><div class="sec-num">Section 4</div><div class="sec-title">Get Started with Playwright</div><div class="sec-soon">coming soon</div></div>
-      <div class="sec-card"><div class="sec-num">Section 5</div><div class="sec-title">DOM, Locators &amp; Basic Workflows</div><div class="sec-soon">coming soon</div></div>
-      <div class="sec-card"><div class="sec-num">Section 6</div><div class="sec-title">Refactoring &amp; Expanding Workflows</div><div class="sec-soon">coming soon</div></div>
-      <div class="sec-card"><div class="sec-num">Section 7</div><div class="sec-title">Phase 2 Kickoff — Strategy &amp; Structure</div><div class="sec-soon">coming soon</div></div>
-      <div class="sec-card"><div class="sec-num">Section 8</div><div class="sec-title">Fixtures &amp; Authentication State</div><div class="sec-soon">coming soon</div></div>
-      <div class="sec-card"><div class="sec-num">Section 9</div><div class="sec-title">Environment Config &amp; Test Data</div><div class="sec-soon">coming soon</div></div>
-      <div class="sec-card"><div class="sec-num">Section 10</div><div class="sec-title">Page Object Model</div><div class="sec-soon">coming soon</div></div>
-      <div class="sec-card"><div class="sec-num">Section 11</div><div class="sec-title">Reporting, Logging &amp; Debugging</div><div class="sec-soon">coming soon</div></div>
-      <div class="sec-card"><div class="sec-num">Section 12</div><div class="sec-title">API Testing &amp; Hybrid Automation</div><div class="sec-soon">coming soon</div></div>
-      <div class="sec-card"><div class="sec-num">Section 13</div><div class="sec-title">CI/CD with GitHub Actions</div><div class="sec-soon">coming soon</div></div>
-      <div class="sec-card"><div class="sec-num">Section 14</div><div class="sec-title">AI Test Automation — Copilot, MCP &amp; Agents</div><div class="sec-soon">coming soon</div></div>
-      <div class="sec-card"><div class="sec-num">Section 15</div><div class="sec-title">Framework Review &amp; Parallel Execution</div><div class="sec-soon">coming soon</div></div>
-    </div>
   </div>
 </div>
+
+<script>
+const COURSE_URL = "https://www.udemy.com/course/playwright-automation-basics-to-advance-typescript/?referralCode=EB1B083AE4ED6DB00852";
+
+const QUESTIONS = [
+  {
+    tag: "typescript vs js",
+    text: "What's the main thing TypeScript adds on top of JavaScript?",
+    options: [
+      "Faster runtime execution",
+      "Static typing — catches type errors before you ever run the code",
+      "A completely different syntax for loops",
+      "It removes the need for functions"
+    ],
+    correct: 1,
+    explain: "TypeScript compiles down to plain JavaScript — the real value is catching mistakes at write-time instead of discovering them mid-test-run, when they're far more expensive to track down."
+  },
+  {
+    tag: "variables",
+    text: "Why prefer const over let when a variable's value won't change?",
+    options: [
+      "const runs faster at runtime",
+      "It signals intent and lets the compiler catch accidental reassignment",
+      "let is deprecated in TypeScript",
+      "const allows type inference and let doesn't"
+    ],
+    correct: 1,
+    explain: "const isn't about performance — it's a guardrail. If you (or Copilot) accidentally try to reassign it later, TypeScript flags it immediately instead of letting a silent bug slip into a test."
+  },
+  {
+    tag: "data types",
+    text: "What happens if you try to assign a string to a variable typed as number in TypeScript?",
+    options: [
+      "It converts automatically at runtime",
+      "TypeScript flags it as a compile-time error before you even run the code",
+      "Nothing — types are just comments",
+      "It throws a runtime exception during test execution"
+    ],
+    correct: 1,
+    explain: "This is the whole point of static typing: the mismatch is caught before the test ever runs, not discovered as a confusing failure three steps into a test."
+  },
+  {
+    tag: "conditional logic",
+    text: "Why avoid heavy if/else branching inside a Playwright test?",
+    options: [
+      "Playwright doesn't support if statements",
+      "Tests with lots of branching logic get harder to read and can hide what's actually being verified",
+      "It slows down test execution significantly",
+      "TypeScript requires all conditions in separate files"
+    ],
+    correct: 1,
+    explain: "A test full of conditions starts testing multiple different paths at once — which makes it unclear what actually failed when it goes red. Simple, linear tests are easier to trust."
+  },
+  {
+    tag: "loops",
+    text: "What's a common reason to use a loop when writing a Playwright test?",
+    options: [
+      "To make the test file shorter no matter what",
+      "To repeat an assertion across a list of similar items — like every product card on a page",
+      "Loops are required by Playwright's syntax",
+      "To slow down execution for visual debugging"
+    ],
+    correct: 1,
+    explain: "Loops shine when you're verifying the same kind of check across many similar elements — search results, cart items, table rows — without hand-writing the same assertion repeatedly."
+  },
+  {
+    tag: "functions",
+    text: "Why break test logic into small reusable functions instead of one long test?",
+    options: [
+      "Playwright requires functions for every action",
+      "It reduces duplication and makes each piece independently readable and reusable",
+      "It makes tests run in parallel automatically",
+      "Functions execute faster than inline code"
+    ],
+    correct: 1,
+    explain: "This is the seed of everything that comes later — fixtures, page objects, helpers. It all starts with the habit of not repeating yourself inside a single long test."
+  },
+  {
+    tag: "classes & objects",
+    text: "Why does this course introduce classes and objects here, before Playwright is even mentioned?",
+    options: [
+      "It's unrelated — just general programming practice",
+      "Classes are the foundation the Page Object Model pattern is built on later",
+      "TypeScript requires classes for all variables",
+      "Classes make code run faster"
+    ],
+    correct: 1,
+    explain: "This is deliberate sequencing. When Page Object Model shows up later in the course, it isn't a new concept — it's classes and objects, a pattern you already understand, applied to a real problem."
+  }
+];
+
+let current = 0;
+let score = 0;
+let answers = [];
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function startQuiz(){
+  current = 0; score = 0; answers = [];
+  showScreen('screen-question');
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q = QUESTIONS[current];
+  document.getElementById('qCounter').textContent = `test ${current + 1} / ${QUESTIONS.length}`;
+  document.getElementById('qTag').textContent = q.tag;
+  document.getElementById('qText').textContent = q.text;
+  document.getElementById('progressFill').style.width = `${(current / QUESTIONS.length) * 100}%`;
+
+  const optsEl = document.getElementById('qOptions');
+  optsEl.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span>${opt}</span>`;
+    btn.onclick = () => selectAnswer(i);
+    optsEl.appendChild(btn);
+  });
+
+  document.getElementById('qExplain').classList.remove('show');
+  document.getElementById('nextBtn').disabled = true;
+  document.getElementById('nextBtn').textContent = current === QUESTIONS.length - 1 ? 'See results →' : 'Next test →';
+}
+
+function selectAnswer(i){
+  const q = QUESTIONS[current];
+  const opts = document.querySelectorAll('#qOptions .option');
+  opts.forEach((o, idx) => {
+    o.disabled = true;
+    if (idx === q.correct) o.classList.add('correct');
+    else if (idx === i) o.classList.add('incorrect');
+  });
+  const correct = (i === q.correct);
+  if (correct) score++;
+  answers.push({ tag: q.tag, correct });
+
+  const ex = document.getElementById('qExplain');
+  ex.innerHTML = `<b>${correct ? 'Correct.' : 'Not quite.'}</b> ${q.explain}`;
+  ex.classList.add('show');
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function nextQuestion(){
+  current++;
+  if (current >= QUESTIONS.length){
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResults(){
+  document.getElementById('progressFill').style.width = '100%';
+  showScreen('screen-result');
+  document.getElementById('rScore').textContent = score;
+
+  let tier, desc;
+  if (score >= 6){
+    tier = "Foundations Locked In";
+    desc = "You've got exactly what the rest of the course builds on. Fixtures, POM, and everything after this will click faster because these basics are solid.";
+  } else if (score >= 4){
+    tier = "Mostly Solid";
+    desc = "You know most of this well. Worth a quick pass back through the section — a couple of these ideas resurface directly in later lectures.";
+  } else {
+    tier = "Good Time for a Refresher";
+    desc = "No issue at all — this is exactly what Section 2 is for. Go through it once more before moving on; everything after this assumes it's second nature.";
+  }
+  document.getElementById('rTier').textContent = tier;
+  document.getElementById('rDesc').textContent = desc;
+
+  const table = document.getElementById('rTable');
+  table.innerHTML = '';
+  answers.forEach(a => {
+    const row = document.createElement('div');
+    row.className = 'report-row';
+    row.innerHTML = `<span class="label">${a.tag}</span><span class="${a.correct ? 'pass' : 'fail'}">${a.correct ? '✓ pass' : '✕ fail'}</span>`;
+    table.appendChild(row);
+  });
+
+  document.getElementById('rCta').href = COURSE_URL;
+}
+
+function restartQuiz(){
+  showScreen('screen-intro');
+  document.getElementById('progressFill').style.width = '0%';
+}
+</script>
+
 </body>
 </html>
